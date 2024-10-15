@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/widgets/text_todotile.dart';
+import 'package:todo/widgets/textfield_todotile.dart';
 
 class newTodotile extends StatelessWidget {
   const newTodotile({super.key});
@@ -31,45 +32,25 @@ class newTodotile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Text("What are you planing?"),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: TextField(
-              style: TextStyle(fontSize: 30),
-              decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white)),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-             ),
-            ),
+          customTextfield(
+            fontSize: 30,
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
           ),
-
-SizedBox(height: 30,),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Divider(),
-        ),
-          SizedBox(height: 25),
+          SizedBox(
+            height: 30,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Add Note',
-                hintStyle: TextStyle(color: Colors.grey[500]),
-                prefixIcon: Icon(Icons.bookmark_border,color: Colors.grey[500],),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
-          )
-
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Divider(),
+          ),
+          SizedBox(height: 25),
+          customTextfield(
+              hintText: "Add Note",
+              prefixIcons: Icon(
+                Icons.bookmark_border,
+                color: Colors.grey[500],
+              ))
         ],
       ),
     );
