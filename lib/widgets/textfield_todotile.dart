@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-class customTextfield extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String? hintText;
   final Icon? prefixIcons;
   final double? fontSize;
   final EdgeInsets? contentPadding;
+  final Color borderColor;
 
-  const customTextfield({super.key,
+  const CustomTextField({
+    super.key,
     this.hintText,
     this.prefixIcons,
     this.fontSize,
-  this.contentPadding,
+    this.contentPadding,
+    this.borderColor = Colors.white,
   });
 
   @override
@@ -23,15 +26,13 @@ class customTextfield extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey[500]),
           prefixIcon: prefixIcons,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: borderColor),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-
-
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: borderColor),
           ),
-          contentPadding: contentPadding
+          contentPadding: contentPadding,
         ),
       ),
     );
