@@ -6,21 +6,28 @@ class CustomTextField extends StatelessWidget {
   final double? fontSize;
   final EdgeInsets? contentPadding;
   final Color borderColor;
+  final TextEditingController controller;
+  final VoidCallback? onTap;
 
   const CustomTextField({
-    super.key,
+    Key? key,
     this.hintText,
     this.prefixIcons,
     this.fontSize,
     this.contentPadding,
     this.borderColor = Colors.white,
-  });
+    required this.controller,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
+        controller: controller,
+        readOnly: onTap != null,
+        onTap: onTap,
         style: TextStyle(fontSize: fontSize),
         decoration: InputDecoration(
           hintText: hintText,

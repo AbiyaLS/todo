@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:todo/util/addtask_button.dart';
 import 'package:todo/widgets/text_todotile.dart';
 import 'package:todo/widgets/textfield_todotile.dart';
 
 class newTodotile extends StatelessWidget {
-  const newTodotile({super.key});
+  newTodotile({super.key});
+
+  TextEditingController _timeController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _taskController=TextEditingController();
+  TextEditingController _notecontroller= TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,7 @@ class newTodotile extends StatelessWidget {
             child: Text("What are you planing?"),
           ),
           CustomTextField(
+            controller: _taskController,
             borderColor: Colors.white,
             fontSize: 30,
             contentPadding:
@@ -48,6 +55,7 @@ class newTodotile extends StatelessWidget {
           ),
           SizedBox(height: 25),
           CustomTextField(
+              controller: _notecontroller,
               borderColor: Colors.white,
               hintText: "Add Note",
               prefixIcons: Icon(
@@ -60,6 +68,15 @@ class newTodotile extends StatelessWidget {
           CustomTextField(
             hintText: "Time",
             borderColor: Colors.grey,
+            controller: _timeController,
+            onTap: () async {
+              TimeOfDay? PickedTime = await showTimePicker(
+                  context: context, initialTime: TimeOfDay.now());
+              if (PickedTime != null) {
+                String formattedtime = PickedTime.format(context);
+                _timeController.text = formattedtime;
+              }
+            },
           ),
           SizedBox(
             height: 18,
@@ -67,28 +84,23 @@ class newTodotile extends StatelessWidget {
           CustomTextField(
             hintText: "Date",
             borderColor: Colors.grey,
+            controller: _dateController,
+            onTap: () async {
+              DateTime? PickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2101));
+              if(PickedDate!=null){
+                String formattedDate="${PickedDate.day}/${PickedDate.month}/${PickedDate.year}";
+                _dateController.text=formattedDate;
+              }
+            },
           ),
           SizedBox(
             height: 100,
           ),
-          Center(
-            child: Container(
-              height: 50,
-              width: 200,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Color(0xFF604CC3),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Add Task",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          )
+          AddtaskButton(),
         ],
       ),
     );
