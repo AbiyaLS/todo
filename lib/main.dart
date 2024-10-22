@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
          brightness: Brightness.light,
 
        ),
-      home:newTodotile(),
+      home:todoPage(),
     );
   }
 }

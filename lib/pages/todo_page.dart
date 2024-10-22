@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/add_todotile.dart';
+import 'package:todo/pages/menu_page.dart';
 import 'package:todo/util/todo_tiles.dart';
 
 class todoPage extends StatelessWidget {
@@ -12,12 +13,18 @@ class todoPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
         toolbarHeight: 80.0,
-        leading: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.menu_sharp,
-              size: 35,
-            )),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: Icon(
+                  Icons.menu_sharp,
+                  size: 35,
+                ));
+          }
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -28,6 +35,7 @@ class todoPage extends StatelessWidget {
           ),
         ],
       ),
+      drawer:MenuPage(),
       body: Column(
         children: [
           SizedBox(
