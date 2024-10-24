@@ -8,8 +8,8 @@ class newTodotile extends StatelessWidget {
 
   TextEditingController _timeController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
-  TextEditingController _taskController=TextEditingController();
-  TextEditingController _notecontroller= TextEditingController();
+  TextEditingController _taskController = TextEditingController();
+  TextEditingController _noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class newTodotile extends StatelessWidget {
           ),
           SizedBox(height: 25),
           CustomTextField(
-              controller: _notecontroller,
+              controller: _noteController,
               borderColor: Colors.white,
               hintText: "Add Note",
               prefixIcons: Icon(
@@ -91,16 +91,34 @@ class newTodotile extends StatelessWidget {
                   initialDate: DateTime.now(),
                   firstDate: DateTime(1900),
                   lastDate: DateTime(2101));
-              if(PickedDate!=null){
-                String formattedDate="${PickedDate.day}/${PickedDate.month}/${PickedDate.year}";
-                _dateController.text=formattedDate;
+              if (PickedDate != null) {
+                String formattedDate =
+                    "${PickedDate.day}/${PickedDate.month}/${PickedDate.year}";
+                _dateController.text = formattedDate;
               }
             },
           ),
           SizedBox(
             height: 100,
           ),
-          AddtaskButton(),
+          AddtaskButton(
+            text: "Add Task",
+            onPressed: () {
+              String taskName = _taskController.text;
+              String taskNote = _noteController.text;
+              String taskTime = _timeController.text;
+              String taskDate = _dateController.text;
+
+              // Pass data back to todoPage
+              Navigator.pop(context, [
+                taskName,
+                taskNote,
+                taskTime,
+                taskDate,
+                false, // taskCompleted
+              ]);
+            },
+          ),
         ],
       ),
     );

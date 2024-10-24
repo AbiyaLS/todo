@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddtaskButton extends StatelessWidget {
-  const AddtaskButton({super.key});
+  final String text;
+  VoidCallback onPressed;
+
+  AddtaskButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +18,9 @@ class AddtaskButton extends StatelessWidget {
               Color(0xFF604CC3),
             ),
           ),
-          onPressed: () {
-          },
+          onPressed: onPressed,
           child: Text(
-            "Add Task",
+          text,
             style: TextStyle(color: Colors.white),
           ),
         ),

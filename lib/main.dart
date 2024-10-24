@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
        theme: ThemeData(
-         brightness: Brightness.light,
-
+         scaffoldBackgroundColor: Colors.grey.shade100,
+         appBarTheme: AppBarTheme(color: Colors.grey.shade100)
        ),
       home:todoPage(),
     );
