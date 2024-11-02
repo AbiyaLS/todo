@@ -1,7 +1,10 @@
-import 'dart:ui_web';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lottie/lottie.dart';
+import 'package:todo/data/database.dart';
 import 'package:todo/pages/add_todotile.dart';
 import 'package:todo/pages/menu_page.dart';
+import 'package:todo/util/clear_alertbox.dart';
 import 'package:todo/util/todo_tiles.dart';
 
 class todoPage extends StatefulWidget {
@@ -12,23 +15,43 @@ class todoPage extends StatefulWidget {
 }
 
 class _todoPageState extends State<todoPage> {
-  List todoList = [
-    ["make egfe", "yrehfyyr", "445/35", "7/8/8529", false],
-    ["make egfe", "yrehfyyr", "445/35", "7/8/8529", false]
-  ];
+  bool isEmpty = false;
+
+  final _myBox = Hive.box('mybox');
+  TodoDatabase db = TodoDatabase();
+
+  @override
+  void initState() {
+    super.initState();
+    if (_myBox.get('TODOLIST') == null) {
+      db.createInitialDAta();
+      db.updateDatabase();
+    } else {
+      db.loadingData();
+    }
+    _updateEmptyState();
+  }
 
   // When checkBox is tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      todoList[index][4] = !todoList[index][4];
+      db.todoList[index][4] = !db.todoList[index][4];
     });
+    db.updateDatabase();
   }
 
-  // delete Task from each todotile
-
-  void deleteTask(BuildContext context,int index){
+  // delete Task from each todoTile
+  void deleteTask(BuildContext context, int index) {
     setState(() {
-       todoList.removeAt(index);
+      db.todoList.removeAt(index);
+    });
+    db.updateDatabase();
+    _updateEmptyState();
+  }
+
+  void _updateEmptyState() {
+    setState(() {
+      isEmpty = db.todoList.isEmpty;
     });
   }
 
@@ -50,9 +73,24 @@ class _todoPageState extends State<todoPage> {
         }),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return ClearAlertBox(
+                    onPressed: () {
+                      setState(() {
+                        db.todoList.clear();
+                        db.updateDatabase();
+                      });
+                      _updateEmptyState();
+                    },
+                  );
+                },
+              );
+            },
             icon: Icon(
-              Icons.delete_outline_rounded,
+              Icons.delete,
               size: 35,
             ),
           ),
@@ -81,22 +119,32 @@ class _todoPageState extends State<todoPage> {
             height: 20,
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: todoList.length,
-                itemBuilder: (context, index) {
-                  return todoTile(
-                      taskName: todoList[index][0],
-                      taskNote: todoList[index][1],
-                      taskTime: todoList[index][2],
-                      taskDate: todoList[index][3],
-                      taskCompleted: todoList[index][4],
-                      onChanged: (value) => checkBoxChanged(value, index),
-                      deleteFunction: (context) => deleteTask(context, index),);
-                },
-              ),
-            ),
+            child: isEmpty
+                ? Center(
+                    child:
+                        Container(constraints: BoxConstraints(
+                          maxWidth: 250,  // Max width for the animation
+                          maxHeight: 300, // Max height for the animation
+                        ),child: Lottie.asset("assets/loading.json")),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ListView.builder(
+                      itemCount: db.todoList.length,
+                      itemBuilder: (context, index) {
+                        return TodoTile(
+                          taskName: db.todoList[index][0],
+                          taskNote: db.todoList[index][1],
+                          taskTime: db.todoList[index][2],
+                          taskDate: db.todoList[index][3],
+                          taskCompleted: db.todoList[index][4],
+                          onChanged: (value) => checkBoxChanged(value, index),
+                          deleteFunction: (context) =>
+                              deleteTask(context, index),
+                        );
+                      },
+                    ),
+                  ),
           ),
         ],
       ),
@@ -107,8 +155,10 @@ class _todoPageState extends State<todoPage> {
           // if newTAsk is not null, add to the todoList
           if (newTask != null) {
             setState(() {
-              todoList.add(newTask);
+              db.todoList.add(newTask);
             });
+            db.updateDatabase();
+            _updateEmptyState();
           }
         },
         child: Icon(

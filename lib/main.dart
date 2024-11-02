@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/pages/add_todotile.dart';
 import 'package:todo/pages/todo_page.dart';
 
-void main() {
+void main() async{
+
+  // initalised hive
+  await Hive.initFlutter();
+  //open a box
+  await Hive.openBox("mybox");
   runApp(const MyApp());
 }
 
