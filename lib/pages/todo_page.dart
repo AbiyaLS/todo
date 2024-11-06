@@ -32,6 +32,17 @@ class _todoPageState extends State<todoPage> {
     _updateEmptyState();
   }
 
+  // Method to get count of completed tasks
+  int getCompletedTaskCount() {
+    return db.todoList.where((task) => task[4] == true).toList().length;
+  }
+
+  // Method to get total task count
+  int getTotalTaskCount() {
+    return db.todoList.length;
+  }
+
+
   // When checkBox is tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
@@ -105,6 +116,10 @@ class _todoPageState extends State<todoPage> {
           Text(
             "My Tasks",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "${getCompletedTaskCount()} of ${getTotalTaskCount()} tasks ",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey[400]),
           ),
           SizedBox(
             height: 20,
