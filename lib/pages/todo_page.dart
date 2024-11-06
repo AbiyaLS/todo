@@ -34,7 +34,7 @@ class _todoPageState extends State<todoPage> {
 
   // Method to get count of completed tasks
   int getCompletedTaskCount() {
-    return db.todoList.where((task) => task[4] == true).toList().length;
+    return db.todoList.where((task) => task[4] == true).length;
   }
 
   // Method to get total task count
@@ -69,8 +69,9 @@ class _todoPageState extends State<todoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Theme.of(context).colorScheme.background,
         toolbarHeight: 80.0,
         leading: Builder(builder: (context) {
           return IconButton(

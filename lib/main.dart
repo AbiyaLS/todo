@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/pages/add_todotile.dart';
 import 'package:todo/pages/todo_page.dart';
+import 'package:todo/themes/theme.dart';
+import 'package:todo/themes/theme_provider.dart';
 
 void main() async{
 
@@ -18,13 +21,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-       theme: ThemeData(
-         scaffoldBackgroundColor: Colors.grey.shade100,
-         appBarTheme: AppBarTheme(color: Colors.grey.shade100)
-       ),
-      home:todoPage(),
+    return MultiProvider(
+      providers: [
+      ChangeNotifierProvider(create: (context)=>ThemeProvider())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightMode,
+        darkTheme: darkMode,
+        home:todoPage(),
+      ),
     );
   }
 }
